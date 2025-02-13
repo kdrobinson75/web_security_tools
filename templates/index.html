@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Security Automation Tools</title>
+</head>
+
+<body>
+    <h1>Security Automation Tools</h1>
+
+    <h2>File Hash Scanner</h2>
+    <form action="/check_hash" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Check Hash</button>
+    </form>
+
+    <h2>Port Scanner</h2>
+    <form action="/scan_port" method="post">
+        <input type="text" name="target" placeholder="Enter target IP" required>
+        <input type="number" name="port" placeholder="Enter port number" required>
+        <button type="submit">Scan Port</button>
+    </form>
+</body>
+
+</html>
