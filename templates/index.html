@@ -14,33 +14,41 @@
         <h1 class="text-center text-primary">🔐 Security Automation Toolkit</h1>
 
         <div class="row">
-            <<!-- Secure Password Generator -->
-<div class="col-md-6">
-    <div class="card shadow p-4 mt-4">
-        <h3 class="text-center">Secure Password Generator</h3>
-        <form id="password-form">
-            <label>Password Length:</label>
-            <input type="number" name="length" id="length" class="form-control mb-2" min="8" max="32" value="12" required>
-
-            <label>Select Character Types:</label>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" name="upper" checked> Uppercase Letters (A-Z)
+        <!-- Secure Password Generator -->
+        <div class="col-md-6">
+            <div class="card shadow p-4 mt-4">
+                <h3 class="text-center">Secure Password Generator</h3>
+                <form id="password-form">
+                    <label>Password Length:</label>
+                    <input type="number" name="length" id="length" class="form-control mb-2" min="8" max="32" value="12"
+                        required>
+        
+                    <label>Select Character Types:</label>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="upper" checked> Uppercase Letters (A-Z)
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="lower" checked> Lowercase Letters (a-z)
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="numbers" checked> Numbers (0-9)
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="symbols"> Special Characters (!@#$%^&)
+                    </div>
+        
+                    <button type="button" class="btn btn-success w-100 mt-3" onclick="generatePassword()">Generate
+                        Password</button>
+                </form>
+        
+                <!-- Password Display + Copy Button -->
+                <div class="d-flex align-items-center justify-content-between mt-3">
+                    <p id="password-result" class="text-center text-success fw-bold flex-grow-1"></p>
+                    <button id="copy-btn" class="btn btn-outline-secondary" onclick="copyPassword()" style="display: none;">📋
+                        Copy</button>
+                </div>
             </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" name="lower" checked> Lowercase Letters (a-z)
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" name="numbers" checked> Numbers (0-9)
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" name="symbols"> Special Characters (!@#$%^&)
-            </div>
-
-            <button type="button" class="btn btn-success w-100 mt-3" onclick="generatePassword()">Generate Password</button>
-        </form>
-        <p id="password-result" class="mt-3 text-center text-success fw-bold"></p>
-    </div>
-</div>
+        </div>
 
             <!-- What's My IP -->
             <div class="col-md-6">
@@ -106,11 +114,32 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("password-result").innerText = data.password || data.error;
+                    const passwordOutput = document.getElementById("password-result");
+                    const copyButton = document.getElementById("copy-btn");
+
+                    if (data.password) {
+                        passwordOutput.innerText = data.password;
+                        copyButton.style.display = "inline-block"; // Show copy button
+                    } else {
+                        passwordOutput.innerText = data.error;
+                        copyButton.style.display = "none"; // Hide copy button if error
+                    }
                 })
                 .catch(error => {
                     document.getElementById("password-result").innerText = "⚠️ Error: Could not generate password.";
+                    document.getElementById("copy-btn").style.display = "none";
                 });
+        }
+
+        function copyPassword() {
+            const passwordText = document.getElementById("password-result").innerText;
+            if (passwordText) {
+                navigator.clipboard.writeText(passwordText).then(() => {
+                    alert("✅ Password copied to clipboard!");
+                }).catch(() => {
+                    alert("❌ Failed to copy password.");
+                });
+            }
         }
 
         function getMyIP() {
